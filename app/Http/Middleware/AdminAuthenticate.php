@@ -21,9 +21,9 @@ class AdminAuthenticate extends Middleware
      *
      * @throws \Illuminate\Auth\AuthenticationException
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, ...$guards)
     {
-        $this->authenticate($request);
+        $this->authenticate($request, $guards);
 
         return $next($request);
     }
@@ -37,13 +37,13 @@ class AdminAuthenticate extends Middleware
      *
      * @throws \Illuminate\Auth\AuthenticationException
      */
-    protected function authenticate($request)
+    protected function authenticate($request, array $guards)
     {
             if (auth()->guard("admin")->check()) {
                 return auth()->shouldUse("admin");
             }
 
-        $this->unauthenticated($request);
+        $this->unauthenticated($request, $guards);
     }
 
     /**
@@ -55,7 +55,7 @@ class AdminAuthenticate extends Middleware
      *
      * @throws \Illuminate\Auth\AuthenticationException
      */
-    protected function unauthenticated($request)
+    protected function unauthenticated($request, array $guards)
     {
         throw new AuthenticationException(
             'Unauthenticated.', ["admin"], $this->redirectTo($request)

@@ -10,6 +10,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Actions\Fortify\PasswordValidationRules;
+use App\Models\Admin;
 
 class AdminController extends Controller
 {
@@ -45,16 +46,17 @@ class AdminController extends Controller
     }
     public function adminLogin(Request $request)
     {
-        /* Validator::make($request, [
-            'email' => [
-                'required',
-                'string',
-                'email',
-                'max:255',
-                Rule::unique(Admin::class),
-            ],
-            'password' => $this->passwordRules(),
-        ])->validate(); */
+        // Validator::make($request->toArray(), [
+        //     'email' => [
+        //         'required',
+        //         'string',
+        //         'email',
+        //         'max:255',
+        //         Rule::unique(Admin::class),
+        //     ],
+        //     'password' => $this->passwordRules(),
+        // ])->validate();
+        
         if (auth()->guard("admin")->attempt([
             'email' => $request->email,
             'password' => $request->password,
